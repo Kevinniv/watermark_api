@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_file
 from watermark import add_watermark
 
 app = Flask(__name__)
@@ -16,7 +16,7 @@ def add_watermark_route():
     image.save(input_path)
     add_watermark(input_path, text, output_path)
     
-    return jsonify({'message': 'Watermark added', 'output_path': output_path})
+    return send_file(output_path, mimetype='image/jpeg', as_attachment=True, attachment_filename='output.jpg')
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=int(os.environ.get("PORT", 5000)))
